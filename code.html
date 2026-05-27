@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Last Light - Sector 7 Map</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&amp;family=JetBrains+Mono:wght@300;400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-dirty {
+            background: linear-gradient(135deg, rgba(28, 27, 28, 0.7) 0%, rgba(19, 19, 20, 0.8) 100%);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-dirty::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("https://www.transparenttextures.com/patterns/dust.png");
+            opacity: 0.05;
+            pointer-events: none;
+        }
+        .hologrid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 227, 253, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 227, 253, 0.1) 1px, transparent 1px);
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #00e3fd, transparent);
+            position: absolute;
+            top: 0;
+            animation: scan 8s linear infinite;
+            opacity: 0.3;
+            z-index: 10;
+        }
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+        .flicker {
+            animation: flicker-anim 0.2s infinite alternate;
+        }
+        @keyframes flicker-anim {
+            0% { opacity: 0.9; }
+            100% { opacity: 1; }
+        }
+        .threat-pulse {
+            animation: threat-anim 2s ease-in-out infinite;
+        }
+        @keyframes threat-anim {
+            0% { background-color: rgba(255, 71, 0, 0.1); border-color: rgba(255, 71, 0, 0.3); }
+            50% { background-color: rgba(255, 71, 0, 0.3); border-color: rgba(255, 71, 0, 0.8); }
+            100% { background-color: rgba(255, 71, 0, 0.1); border-color: rgba(255, 71, 0, 0.3); }
+        }
+    @keyframes objective-pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
+.objective-glow { animation: objective-pulse 1.5s ease-in-out infinite; }
+.waypoint-dot { width: 6px; height: 6px; border-radius: 9999px; }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  @keyframes objective-pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
+.objective-glow { animation: objective-pulse 1.5s ease-in-out infinite; }
+.waypoint-dot { width: 6px; height: 6px; border-radius: 9999px; }</style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden h-screen w-screen selection:bg-secondary/30">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface-container-low/60 backdrop-blur-xl border-b border-secondary-container/30 shadow-[0_0_15px_rgba(0,227,253,0.2)] flex justify-between items-center px-margin-mobile py-unit h-16">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary-fixed-dim" data-icon="terminal">terminal</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-secondary tracking-widest uppercase">LAST_LIGHT_OS_V4.2</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex flex-col items-end">
+<span class="font-technical-sm text-technical-sm text-secondary-fixed-dim uppercase tracking-tighter">System Status: Stable</span>
+<span class="font-technical-sm text-technical-sm text-outline">LOC: SECTOR_07_RUINS</span>
+</div>
+<button class="hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-secondary-fixed-dim" data-icon="settings_input_component">settings_input_component</span>
+</button>
+</div>
+</header>
+<!-- Main Tactical Canvas -->
+<main class="relative h-screen w-screen pt-16 pb-20 overflow-hidden bg-black">
+<!-- 3D Scan Map Background -->
+<div class="absolute inset-0 z-0">
+<img alt="Tactical Map" class="w-full h-full object-cover opacity-50 grayscale contrast-125" data-alt="A gritty, high-contrast overhead satellite view of a destroyed metropolitan city block. The scene is dominated by deep shadows and skeletal remains of skyscrapers. Glowing holographic blue grid lines and topographical scan markers are overlaid on the terrain, creating a tactical military interface aesthetic. Neon blue and emergency orange highlights indicate critical structures and hazard zones within the dark, atmospheric urban decay." data-location="London Ruins" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIY0gaOn815O5C_wOyeApSg4dzQ3qAXs7OkH4clsemyXs_Uzh9Sl19X1pppVRaHDudY2ivNuynipdNoKh4LCk9gk-5AiPBfhAZ0vwfT4sS3c25enwQOqFqEsDtAGLFHK_oLBgy-DGtkgplHW9ryiiNDyb9rXgnL35P4ewrtGPrkFiNi9Sbplx7wzNgnIop9fA0TDYxkpP9iVeKiKp8iq03CCjGW1CaOaG6K0i5cKr3t1lMQnNGi2qPSpCXy7_bCmyrHAXMsLxb3pY"/>
+<div class="absolute inset-0 hologrid opacity-40"></div>
+<div class="scanline"></div>
+</div>
+<!-- Threat Zones (Overlays) -->
+<div class="absolute top-[30%] left-[20%] w-64 h-64 rounded-full border-2 border-primary-container threat-pulse z-10 flex items-center justify-center pointer-events-none">
+<span class="font-label-caps text-label-caps text-primary-container bg-background/80 px-2">THREAT: HIGH</span>
+</div>
+<div class="absolute bottom-[25%] right-[15%] w-48 h-48 rounded-full border-2 border-primary-container threat-pulse z-10 flex items-center justify-center pointer-events-none" style="animation-delay: 1s;">
+<span class="font-label-caps text-label-caps text-primary-container bg-background/80 px-2">SHADOW_CLUSTER</span>
+</div>
+<!-- Interactive Map Icons -->
+<!-- Current Location -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 group cursor-crosshair">
+<div class="relative">
+<div class="absolute -inset-4 bg-secondary/20 rounded-full animate-ping"></div>
+<div class="w-4 h-4 bg-secondary-fixed-dim border-2 border-white rotate-45 shadow-[0_0_10px_#00e3fd]"></div>
+<div class="absolute top-6 left-6 glass-dirty p-2 border border-secondary/40 whitespace-nowrap">
+<p class="font-label-caps text-label-caps text-secondary">OPERATIVE ID-882</p>
+<p class="text-[10px] text-outline">STAMINA: 88% | RAD: 0.02</p>
+</div>
+</div>
+</div>
+<!-- Survivor Hive -->
+<button class="absolute top-[20%] right-[30%] z-20 group">
+<span class="material-symbols-outlined text-secondary-fixed-dim drop-shadow-[0_0_5px_#00e3fd]" data-icon="home_health">home_health</span>
+<span class="absolute top-full left-1/2 -translate-x-1/2 mt-1 opacity-0 group-hover:opacity-100 transition-opacity bg-surface-container text-secondary text-[10px] px-1 border border-secondary/20">HIVE_04</span>
+</button>
+<!-- Resource Cache -->
+<button class="absolute bottom-[40%] left-[15%] z-20 group">
+<span class="material-symbols-outlined text-tertiary drop-shadow-[0_0_5px_#e9c349]" data-icon="inventory_2" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="absolute top-full left-1/2 -translate-x-1/2 mt-1 opacity-0 group-hover:opacity-100 transition-opacity bg-surface-container text-tertiary text-[10px] px-1 border border-tertiary/20">CACHE_ALPHA</span>
+</button>
+<!-- Extraction Point -->
+<button class="absolute top-[15%] left-[25%] z-20 group">
+<span class="material-symbols-outlined text-primary-container drop-shadow-[0_0_8px_#ff571a] animate-pulse" data-icon="flight_land">flight_land</span>
+<span class="absolute top-full left-1/2 -translate-x-1/2 mt-1 opacity-0 group-hover:opacity-100 transition-opacity bg-surface-container text-primary-container text-[10px] px-1 border border-primary-container/20">EXTRACT_XRAY</span>
+</button>
+<!-- Left Side Panel: HUD Metrics -->
+<aside class="absolute left-margin-mobile top-24 bottom-28 w-72 glass-dirty border border-secondary-container/20 flex flex-col gap-6 p-4 z-30">
+<div>
+<h3 class="font-label-caps text-label-caps text-secondary mb-2 border-l-2 border-secondary pl-2">ENVIRONMENTAL SCAN</h3>
+<div class="space-y-4 mt-4">
+<div class="space-y-1">
+<div class="flex justify-between text-technical-sm font-technical-sm">
+<span class="text-outline">ATMOSPHERIC PRESSURE</span>
+<span class="text-secondary">101.4 kPa</span>
+</div>
+<div class="h-1 bg-surface-variant w-full overflow-hidden">
+<div class="h-full bg-secondary-fixed-dim w-[65%]"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-technical-sm font-technical-sm">
+<span class="text-outline">SHADOW DENSITY</span>
+<span class="text-primary-container">CRITICAL (74%)</span>
+</div>
+<div class="h-1 bg-surface-variant w-full overflow-hidden">
+<div class="h-full bg-primary-container w-[74%] animate-pulse"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-technical-sm font-technical-sm">
+<span class="text-outline">OXYGEN PURITY</span>
+<span class="text-tertiary">STABLE (92%)</span>
+</div>
+<div class="h-1 bg-surface-variant w-full overflow-hidden">
+<div class="h-full bg-tertiary w-[92%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h3 class="font-label-caps text-label-caps text-outline mb-2 border-l-2 border-outline pl-2">MISSION WAYPOINTS</h3>
+<div class="space-y-3 mt-4">
+<div class="flex items-center justify-between group cursor-pointer">
+<div class="flex items-center gap-2">
+<div class="waypoint-dot bg-primary-container"></div>
+<span class="text-technical-sm text-on-surface">EVAC POINT</span>
+</div>
+<span class="font-technical-sm text-primary-container">420m</span>
+</div>
+<div class="flex items-center justify-between group cursor-pointer opacity-70">
+<div class="flex items-center gap-2">
+<div class="waypoint-dot bg-secondary"></div>
+<span class="text-technical-sm text-on-surface">INTEL CACHE</span>
+</div>
+<span class="font-technical-sm text-secondary">1.2km</span>
+</div>
+<div class="flex items-center justify-between group cursor-pointer opacity-70">
+<div class="flex items-center gap-2">
+<div class="waypoint-dot bg-tertiary"></div>
+<span class="text-technical-sm text-on-surface">HIVE_04</span>
+</div>
+<span class="font-technical-sm text-tertiary">850m</span>
+</div>
+</div>
+</div><div class="mt-auto">
+<h3 class="font-label-caps text-label-caps text-outline mb-2">SYSTEM_LOGS</h3>
+<div class="font-technical-sm text-[10px] text-outline leading-tight space-y-1 opacity-60">
+<p>&gt; INITIATING SECTOR SCAN...</p>
+<p>&gt; ANOMALY DETECTED AT GRID 4-E</p>
+<p class="text-primary-container">&gt; WARNING: SHADOW PROXIMITY INCREASED</p>
+<p>&gt; HEARTBEAT SYNCED: 72 BPM</p>
+</div>
+</div>
+<button class="w-full py-3 border border-secondary text-secondary font-label-caps hover:bg-secondary/10 transition-all active:scale-95">
+                RECALIBRATE SENSORS
+            </button>
+</aside>
+<!-- Right Bottom Overlay: Legend -->
+<div class="absolute bottom-24 right-margin-mobile glass-dirty border border-secondary-container/20 p-4 z-30 hidden md:block">
+<h3 class="font-label-caps text-label-caps text-secondary mb-3">MAP_LEGEND</h3>
+<div class="grid grid-cols-2 gap-x-4 gap-y-2">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-secondary rotate-45"></span>
+<span class="text-technical-sm text-outline">OPERATIVE</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-container rounded-full"></span>
+<span class="text-technical-sm text-outline">THREAT</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[14px]" data-icon="home_health">home_health</span>
+<span class="text-technical-sm text-outline">HIVE</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[14px]" data-icon="inventory_2" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="text-technical-sm text-outline">CACHE</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-unit pb-safe h-20 bg-surface-container-lowest/80 backdrop-blur-2xl border-t border-secondary-container/20 z-50">
+<button class="flex flex-col items-center justify-center text-outline opacity-60 py-2 px-4 hover:bg-surface-variant hover:opacity-100 transition-all">
+<span class="material-symbols-outlined" data-icon="handyman">handyman</span>
+<span class="font-label-caps text-label-caps mt-1">GEAR</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline opacity-60 py-2 px-4 hover:bg-surface-variant hover:opacity-100 transition-all">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="font-label-caps text-label-caps mt-1">CRAFT</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-secondary-container/20 text-secondary-fixed shadow-[inset_0_0_12px_rgba(0,227,253,0.3)] rounded-lg py-2 px-4 border border-secondary/40 active:scale-95 brightness-125 transition-all">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-caps text-label-caps mt-1">MAP</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline opacity-60 py-2 px-4 hover:bg-surface-variant hover:opacity-100 transition-all">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+<span class="font-label-caps text-label-caps mt-1">INTEL</span>
+</button>
+</nav>
+<!-- Flashlight Beam Micro-Interaction Logic -->
+<div class="pointer-events-none fixed inset-0 z-40 transition-opacity duration-500 opacity-0" id="flashlight" style="background: radial-gradient(circle 200px at 50% 50%, transparent 0%, rgba(0,0,0,0.85) 100%);"></div>
+<script>
+        const flashlight = document.getElementById('flashlight');
+        let flashlightOn = false;
+
+        document.addEventListener('mousemove', (e) => {
+            if (flashlightOn) {
+                flashlight.style.background = `radial-gradient(circle 250px at ${e.clientX}px ${e.clientY}px, rgba(255, 238, 171, 0.05) 0%, rgba(0,0,0,0.92) 100%)`;
+            }
+        });
+
+        // Toggle flashlight on 'F' key
+        document.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'f') {
+                flashlightOn = !flashlightOn;
+                flashlight.style.opacity = flashlightOn ? '1' : '0';
+            }
+        });
+
+        // Micro-flicker for the scanline
+        setInterval(() => {
+            const scan = document.querySelector('.scanline');
+            if (Math.random() > 0.95) {
+                scan.style.opacity = '0.8';
+                setTimeout(() => scan.style.opacity = '0.3', 50);
+            }
+        }, 500);
+    </script>
+</body></html>
